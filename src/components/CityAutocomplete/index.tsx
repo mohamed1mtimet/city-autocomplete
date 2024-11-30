@@ -35,6 +35,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   useEffect(() => {
     if (data) {
       setSuggestions(data);
+      setShowDropDown(true);
     }
   }, [data]);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
