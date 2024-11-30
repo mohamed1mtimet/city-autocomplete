@@ -12,9 +12,13 @@ interface CityAutocompleteProps {
   onSelect: (id: string) => void;
 }
 
-const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ onSelect }) => {
+const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
+  onSelect,
+  ...rest
+}) => {
   const [query, setQuery] = useState<string>("");
   const [value, setValue] = useState<string>("");
+  const [showDropDown, setShowDropDown] = useState<boolean>(true);
 
   const [filteredSuggestions, setFilteredSuggestions] = useState<City[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -39,9 +43,6 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ onSelect }) => {
       onSelect("");
     }
   }
-  function handelClickingOutside() {
-    setFilteredSuggestions([]);
-  }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && filteredSuggestions.length > 0) {
@@ -60,30 +61,52 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ onSelect }) => {
     onSelect(suggestion.id);
   }
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement | null; // Type casting event.target as HTMLElement
+      const targetClassName = target?.className || ""; // Ensure that target is an HTMLElement
+
+      if (
+        targetClassName.includes("autocomplete") ||
+        targetClassName.includes("dropDown")
+      ) {
+        setShowDropDown(true);
+      } else {
+        setShowDropDown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <Wrapper>
       <Input
+        className="autocomplete"
         type="text"
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="Search..."
-        onBlur={handelClickingOutside}
+        {...rest}
       />
 
       {isLoading && (
-        <SuggestionsList>
+        <SuggestionsList className="dropDown">
           <Loader />
         </SuggestionsList>
       )}
 
-      {filteredSuggestions.length > 0 && query !== "" && (
+      {filteredSuggestions.length > 0 && showDropDown && query !== "" && (
         <SuggestionsList>
           {filteredSuggestions.map((suggestion, index) => (
             <SuggestionItem
               key={suggestion.id}
               isActive={index === activeIndex}
               onClick={() => handleClick(suggestion)}
+              className="dropDown"
             >
               {suggestion.name}
             </SuggestionItem>
