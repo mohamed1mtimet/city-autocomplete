@@ -39,6 +39,9 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ onSelect }) => {
       onSelect("");
     }
   }
+  function handelClickingOutside() {
+    setFilteredSuggestions([]);
+  }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && filteredSuggestions.length > 0) {
@@ -65,6 +68,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ onSelect }) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="Search..."
+        onBlur={handelClickingOutside}
       />
 
       {isLoading && (
