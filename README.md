@@ -1,50 +1,103 @@
-# React + TypeScript + Vite
+# City Autocomplete App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+This is a React application that allows users to search for cities and select one from an autocomplete dropdown. When a city is selected, the application displays the UUID of the selected city.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **City Autocomplete**: The app includes a city search input field that dynamically shows city suggestions based on the user's query.
+- **City UUID Display**: Once a city is selected from the list, the UUID of the city is displayed on the screen.
+- **Reusable Components**: The app uses a modular approach with reusable components like `CityAutocomplete` and `Loader`.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Installation
 
-- Configure the top-level `parserOptions` property like this:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/city-autocomplete-app.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd city-autocomplete-app
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Usage
+
+To run the application locally:
+
+1. Start the development server:
+   ```bash
+   npm start
+   ```
+
+## Technologies
+
+- **React**: JavaScript library for building user interfaces.
+- **Styled-components**: A CSS-in-JS library for styling the components.
+- **Axios (or any API client)**: For fetching city data from an API (assumed for this project).
+- **React Hooks**: Used for state management and side effects.
+- **Vite**: A fast build tool and development server for modern web applications.
+- **React-query**: A library for fetching, caching, and syncing server data in React applications.
+
+## Dependencies
+
+- react
+- react-dom
+- react-scripts
+- styled-components
+- react-query
+
+## Components :
+
+#
+
+#
+
+# - CityAutocomplete Component
+
+## Description
+
+`CityAutocomplete` is a React component that provides an autocomplete input field for searching and selecting cities. It fetches cities based on a query and displays a list of suggestions. The user can either type in the input field or select from the dropdown list.
+
+## Props
+
+### `onSelect` (required)
+
+- Type: `(id: string) => void`
+- Description: A function that is called when a city is selected. It receives the `id` of the selected city as an argument.
+
+## Usage
+
+```tsx
+import CityAutocomplete from "./components/CityAutocomplete";
+
+const handleCitySelect = (cityId: string) => {
+  console.log("Selected City ID:", cityId);
+};
+
+<CityAutocomplete onSelect={handleCitySelect} />;
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+# - Loader Component
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Description
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+The `Loader` component is a simple, reusable loading spinner used to indicate that content is being loaded. It is typically used in situations where data is being fetched or processed and the user needs to wait.
+
+## Usage
+
+```tsx
+import Loader from "./components/Loader";
+
+<Loader />;
+```
+
+#
+
+```
+
 ```
