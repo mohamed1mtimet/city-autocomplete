@@ -53,10 +53,6 @@ To run the application locally:
 
 ## Components :
 
-#
-
-#
-
 # - CityAutocomplete Component
 
 ## Description
