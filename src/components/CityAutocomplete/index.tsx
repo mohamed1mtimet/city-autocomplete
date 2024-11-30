@@ -10,10 +10,16 @@ interface City {
 
 interface CityAutocompleteProps {
   onSelect: (id: string) => void;
+  className?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   onSelect,
+  className,
+  onChange,
+  onKeyDown,
   ...rest
 }) => {
   const [query, setQuery] = useState<string>("");
@@ -42,6 +48,9 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     if (!newValue) {
       onSelect("");
     }
+    if (onchange) {
+      onChange(e);
+    }
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -51,6 +60,9 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
       setFilteredSuggestions([]);
       setActiveIndex(-1);
       onSelect(selectedSuggestion.id);
+    }
+    if (onKeyDown) {
+      onKeyDown(e);
     }
   }
 
@@ -84,7 +96,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   return (
     <Wrapper>
       <Input
-        className="autocomplete"
+        className={`autocomplete ${className}`}
         type="text"
         value={value}
         onChange={handleChange}
