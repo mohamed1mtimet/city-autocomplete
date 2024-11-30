@@ -45,6 +45,7 @@ export const SuggestionItem = styled.li<SuggestionItemProps>`
   cursor: pointer;
   text-align: left;
   border-radius: 10px;
+  color: #212121;
   &:hover {
     background: #f0f2f4;
   }

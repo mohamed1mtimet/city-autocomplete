@@ -10,7 +10,7 @@ function App() {
         onSelect={(cityUUID) => setCityUUID(cityUUID)}
         placeholder="seach city ..."
       />
-      <div>
+      <div style={{ minHeight: 100 }}>
         city UUID Selected:
         <br />
         {cityUUID}

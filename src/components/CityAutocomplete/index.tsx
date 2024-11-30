@@ -31,8 +31,12 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
 
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const { data, isLoading } = useFetchCities({ query });
-  const suggestions = data || [];
-
+  const [suggestions, setSuggestions] = useState<City[]>([]);
+  useEffect(() => {
+    if (data) {
+      setSuggestions(data);
+    }
+  }, [data]);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value;
     setQuery(newValue);
@@ -63,6 +67,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     setShowDropDown(false);
     setActiveIndex(-1);
     onSelect(suggestion.id);
+    setSuggestions([]);
   }
 
   useEffect(() => {

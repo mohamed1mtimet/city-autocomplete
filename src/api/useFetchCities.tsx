@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface City {
+export interface City {
   id: string;
   name: string;
 }
@@ -19,7 +19,7 @@ const useFetchCities = ({ query }: UseFetchCitiesParams) => {
         `https://etherqmshqkpehcowxqh.supabase.co/functions/v1/cities?search=${query}`
       );
       return response.data.filter(
-        (e) => e.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        (e: City) => e.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     },
     enabled: query.length >= 2,
