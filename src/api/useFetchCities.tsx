@@ -4,6 +4,7 @@ import axios from "axios";
 export interface City {
   id: string;
   name: string;
+  Country: string;
 }
 
 interface UseFetchCitiesParams {

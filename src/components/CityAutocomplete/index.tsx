@@ -2,11 +2,7 @@ import { useState, useEffect, KeyboardEvent, ChangeEvent } from "react";
 import { useFetchCities } from "../../api";
 import Loader from "../Loader";
 import { Wrapper, Input, SuggestionsList, SuggestionItem } from "./style";
-
-interface City {
-  id: string;
-  name: string;
-}
+import { City } from "../../api/useFetchCities";
 
 interface CityAutocompleteProps {
   onSelect: (id: string) => void;
@@ -117,7 +113,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
         </SuggestionsList>
       )}
 
-      {suggestions.length > 0 && showDropDown && query !== "" && (
+      {!isLoading && suggestions.length > 0 && showDropDown && query !== "" && (
         <SuggestionsList>
           {suggestions.map((suggestion, index) => (
             <SuggestionItem

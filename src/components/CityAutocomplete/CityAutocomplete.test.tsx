@@ -60,12 +60,17 @@ describe("CityAutocomplete Component", () => {
 
     expect(screen.getByTestId("loader")).toBeInTheDocument();
   });
-  it("handles Enter key to select first suggestion", async () => {
+  it("handles ArrowDown and Enter keys to select the first suggestion", async () => {
     const mockOnSelect = jest.fn();
     const mockData = [
       {
         id: "id-paris-75000",
         name: "Paris",
+        country: "France",
+      },
+      {
+        id: "id-lyon-69000",
+        name: "Lyon",
         country: "France",
       },
     ];
@@ -78,12 +83,19 @@ describe("CityAutocomplete Component", () => {
     render(<CityAutocomplete onSelect={mockOnSelect} />);
 
     const input = screen.getByPlaceholderText("Search...");
+
+    // Simulate typing a query
     fireEvent.change(input, { target: { value: "Par" } });
 
     await waitFor(() => {
       expect(screen.getByText("Paris")).toBeInTheDocument();
+      expect(screen.getByText("Lyon")).toBeInTheDocument();
     });
 
+    // Simulate pressing ArrowDown to navigate to the first suggestion
+    fireEvent.keyDown(input, { key: "ArrowDown", code: "ArrowDown" });
+
+    // Simulate pressing Enter to select the active suggestion
     fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
 
     expect(mockOnSelect).toHaveBeenCalledWith("id-paris-75000");
