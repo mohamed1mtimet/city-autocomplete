@@ -46,6 +46,7 @@ export const SuggestionItem = styled.li<SuggestionItemProps>`
   text-align: left;
   border-radius: 10px;
   color: #212121;
+  ${({ isActive }) => (isActive ? "background: #f0f2f4;" : "")}
   &:hover {
     background: #f0f2f4;
   }

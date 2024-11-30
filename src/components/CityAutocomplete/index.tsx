@@ -51,12 +51,20 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && showDropDown) {
-      const selectedSuggestion = suggestions[0];
-      setValue(selectedSuggestion.name);
-      setShowDropDown(false);
-      setActiveIndex(-1);
-      onSelect(selectedSuggestion.id);
+    if (showDropDown) {
+      if (e.key === "Enter") {
+        const selectedSuggestion = suggestions[activeIndex];
+        if (selectedSuggestion) {
+          setValue(selectedSuggestion.name);
+          setShowDropDown(false);
+          setActiveIndex(-1);
+          onSelect(selectedSuggestion.id);
+        }
+      } else if (e.key === "ArrowUp") {
+        setActiveIndex(Math.max(0, activeIndex - 1));
+      } else if (e.key === "ArrowDown") {
+        setActiveIndex(Math.min(suggestions.length - 1, activeIndex + 1));
+      }
     }
     if (onKeyDown) {
       onKeyDown(e);
@@ -117,6 +125,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
               isActive={index === activeIndex}
               onClick={() => handleClick(suggestion)}
               className="dropDown"
+              onMouseEnter={() => setActiveIndex(index)}
             >
               {suggestion.name}
             </SuggestionItem>
