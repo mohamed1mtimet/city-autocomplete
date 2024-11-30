@@ -6,7 +6,10 @@ function App() {
   const [cityUUID, setCityUUID] = useState("");
   return (
     <>
-      <CityAutocomplete onSelect={(cityUUID) => setCityUUID(cityUUID)} />
+      <CityAutocomplete
+        onSelect={(cityUUID) => setCityUUID(cityUUID)}
+        placeholder="seach city ..."
+      />
       <div>
         city UUID Selected:
         <br />

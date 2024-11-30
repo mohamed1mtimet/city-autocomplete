@@ -13,6 +13,7 @@ interface CityAutocompleteProps {
   className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
 const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
@@ -20,6 +21,8 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   className,
   onChange,
   onKeyDown,
+  placeholder = "Search...",
+
   ...rest
 }) => {
   const [query, setQuery] = useState<string>("");
@@ -101,7 +104,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Search..."
+        placeholder={placeholder}
         {...rest}
       />
 
