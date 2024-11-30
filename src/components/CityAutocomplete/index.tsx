@@ -29,20 +29,9 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   const [value, setValue] = useState<string>("");
   const [showDropDown, setShowDropDown] = useState<boolean>(true);
 
-  const [filteredSuggestions, setFilteredSuggestions] = useState<City[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const { data, isLoading } = useFetchCities({ query });
-
-  useEffect(() => {
-    if (data?.length) {
-      const filtered = data.filter((suggestion) =>
-        suggestion.name.toLowerCase().startsWith(query.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-    } else {
-      setFilteredSuggestions([]);
-    }
-  }, [data, query]);
+  const suggestions = data || [];
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value;
@@ -57,10 +46,10 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && filteredSuggestions.length > 0) {
-      const selectedSuggestion = filteredSuggestions[0];
+    if (e.key === "Enter" && showDropDown) {
+      const selectedSuggestion = suggestions[0];
       setValue(selectedSuggestion.name);
-      setFilteredSuggestions([]);
+      setShowDropDown(false);
       setActiveIndex(-1);
       onSelect(selectedSuggestion.id);
     }
@@ -71,7 +60,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
 
   function handleClick(suggestion: City) {
     setValue(suggestion.name);
-    setFilteredSuggestions([]);
+    setShowDropDown(false);
     setActiveIndex(-1);
     onSelect(suggestion.id);
   }
@@ -114,9 +103,9 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
         </SuggestionsList>
       )}
 
-      {filteredSuggestions.length > 0 && showDropDown && query !== "" && (
+      {suggestions.length > 0 && showDropDown && query !== "" && (
         <SuggestionsList>
-          {filteredSuggestions.map((suggestion, index) => (
+          {suggestions.map((suggestion, index) => (
             <SuggestionItem
               key={suggestion.id}
               isActive={index === activeIndex}

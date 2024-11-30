@@ -18,7 +18,9 @@ const useFetchCities = ({ query }: UseFetchCitiesParams) => {
       const response = await axios.get(
         `https://etherqmshqkpehcowxqh.supabase.co/functions/v1/cities?search=${query}`
       );
-      return response.data;
+      return response.data.filter(
+        (e) => e.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
     },
     enabled: query.length >= 2,
     staleTime: Infinity,
