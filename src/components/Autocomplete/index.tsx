@@ -6,6 +6,7 @@ import {
   SuggestionsList,
   SuggestionItem,
   ClearButton,
+  InputContainer,
 } from "./style";
 import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 
@@ -120,9 +121,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   }, []);
   return (
     <Wrapper>
-      <div
-        style={{ position: "relative", display: "flex", alignItems: "center" }}
-      >
+      <InputContainer>
         <Input
           className={`autocomplete ${className}`}
           type="text"
@@ -137,7 +136,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             ✖
           </ClearButton>
         )}
-      </div>
+      </InputContainer>
       {isLoading && (
         <SuggestionsList className="dropDown">
           <Loader />

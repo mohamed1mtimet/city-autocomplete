@@ -18,7 +18,8 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-
+  color: #212121;
+  background-color: #ffffff;
   &:focus {
     border-color: #0077ff;
     outline: none;
@@ -55,5 +56,9 @@ export const ClearButton = styled.button`
   position: absolute;
   right: 10px;
   font-size: 16px;
-  color: #212121;
+`;
+export const InputContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
 `;
