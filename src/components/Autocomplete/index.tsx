@@ -1,6 +1,12 @@
 import { useState, useEffect, KeyboardEvent, ChangeEvent } from "react";
 import Loader from "../Loader";
-import { Wrapper, Input, SuggestionsList, SuggestionItem } from "./style";
+import {
+  Wrapper,
+  Input,
+  SuggestionsList,
+  SuggestionItem,
+  ClearButton,
+} from "./style";
 import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 
 export interface Option {
@@ -85,6 +91,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     onSelect(suggestion.key);
     setSuggestions([]);
   }
+  function handleClear() {
+    setQuery("");
+    setValue("");
+    setSuggestions([]);
+    onSelect("");
+  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -108,16 +120,24 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   }, []);
   return (
     <Wrapper>
-      <Input
-        className={`autocomplete ${className}`}
-        type="text"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        {...rest}
-      />
-
+      <div
+        style={{ position: "relative", display: "flex", alignItems: "center" }}
+      >
+        <Input
+          className={`autocomplete ${className}`}
+          type="text"
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          {...rest}
+        />
+        {value && (
+          <ClearButton onClick={handleClear} aria-label="Clear input">
+            ✖
+          </ClearButton>
+        )}
+      </div>
       {isLoading && (
         <SuggestionsList className="dropDown">
           <Loader />

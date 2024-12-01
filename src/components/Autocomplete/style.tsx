@@ -48,3 +48,12 @@ export const SuggestionItem = styled.li<SuggestionItemProps>`
   color: #212121;
   ${({ isActive }) => (isActive ? "background: #f0f2f4;" : "")}
 `;
+export const ClearButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  color: #212121;
+`;

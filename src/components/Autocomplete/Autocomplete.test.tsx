@@ -91,4 +91,33 @@ describe("Autocomplete Component", () => {
     expect(mockOnSelect).toHaveBeenCalledWith("id-paris-75000");
     expect(input).toHaveValue("Paris");
   });
+
+  it("clears the input and resets suggestions when the clear button is clicked", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Autocomplete
+          onSelect={mockOnSelect}
+          getQueryFn={mockGetQueryFn}
+          getQueryKey={(query) => ["cities", query]}
+        />
+      </QueryClientProvider>
+    );
+
+    const input = screen.getByPlaceholderText("Search...");
+    fireEvent.change(input, { target: { value: "Ly" } });
+
+    await waitFor(() => {
+      expect(screen.getByText("Lyon")).toBeInTheDocument();
+    });
+
+    const clearButton = screen.getByRole("button", { name: /clear input/i });
+    expect(clearButton).toBeInTheDocument();
+    fireEvent.click(clearButton);
+    expect(input).toHaveValue("");
+
+    await waitFor(() => {
+      expect(screen.queryByText("Lyon")).not.toBeInTheDocument();
+    });
+    expect(mockOnSelect).toHaveBeenCalledWith("");
+  });
 });
