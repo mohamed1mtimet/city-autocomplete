@@ -1,24 +1,30 @@
 import { useState, useEffect, KeyboardEvent, ChangeEvent } from "react";
-import { useFetchCities } from "../../api";
 import Loader from "../Loader";
 import { Wrapper, Input, SuggestionsList, SuggestionItem } from "./style";
-import { City } from "../../api/useFetchCities";
+import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 
-interface CityAutocompleteProps {
+export interface Option {
+  key: string;
+  label: string;
+}
+interface AutocompleteProps {
   onSelect: (id: string) => void;
   className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  getQueryFn: (text: string) => QueryFunction<Option[], QueryKey, never>;
+  getQueryKey: (text: string) => QueryKey;
 }
 
-const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
+const Autocomplete: React.FC<AutocompleteProps> = ({
   onSelect,
   className,
   onChange,
   onKeyDown,
   placeholder = "Search...",
-
+  getQueryFn,
+  getQueryKey,
   ...rest
 }) => {
   const [query, setQuery] = useState<string>("");
@@ -26,8 +32,13 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   const [showDropDown, setShowDropDown] = useState<boolean>(true);
 
   const [activeIndex, setActiveIndex] = useState<number>(-1);
-  const { data, isLoading } = useFetchCities({ query });
-  const [suggestions, setSuggestions] = useState<City[]>([]);
+  const { data, isLoading } = useQuery<Option[], Error>({
+    queryKey: getQueryKey(query),
+    queryFn: getQueryFn(query),
+    enabled: query.length >= 2,
+    staleTime: Infinity,
+  });
+  const [suggestions, setSuggestions] = useState<Option[]>([]);
   useEffect(() => {
     if (data) {
       setSuggestions(data);
@@ -41,7 +52,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     if (!newValue) {
       onSelect("");
     }
-    if (onchange) {
+    if (onChange) {
       onChange(e);
     }
   }
@@ -51,10 +62,10 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
       if (e.key === "Enter") {
         const selectedSuggestion = suggestions[activeIndex];
         if (selectedSuggestion) {
-          setValue(selectedSuggestion.name);
+          setValue(selectedSuggestion.label);
           setShowDropDown(false);
           setActiveIndex(-1);
-          onSelect(selectedSuggestion.id);
+          onSelect(selectedSuggestion.key);
         }
       } else if (e.key === "ArrowUp") {
         setActiveIndex(Math.max(0, activeIndex - 1));
@@ -67,11 +78,11 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     }
   }
 
-  function handleClick(suggestion: City) {
-    setValue(suggestion.name);
+  function handleClick(suggestion: Option) {
+    setValue(suggestion.label);
     setShowDropDown(false);
     setActiveIndex(-1);
-    onSelect(suggestion.id);
+    onSelect(suggestion.key);
     setSuggestions([]);
   }
 
@@ -117,13 +128,13 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
         <SuggestionsList>
           {suggestions.map((suggestion, index) => (
             <SuggestionItem
-              key={suggestion.id}
+              key={suggestion.key}
               isActive={index === activeIndex}
               onClick={() => handleClick(suggestion)}
               className="dropDown"
               onMouseEnter={() => setActiveIndex(index)}
             >
-              {suggestion.name}
+              {suggestion.label}
             </SuggestionItem>
           ))}
         </SuggestionsList>
@@ -132,4 +143,4 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   );
 };
 
-export default CityAutocomplete;
+export default Autocomplete;
