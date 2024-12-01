@@ -56,6 +56,14 @@ export const ClearButton = styled.button`
   position: absolute;
   right: 10px;
   font-size: 16px;
+  color: #212121;
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
 `;
 export const InputContainer = styled.div`
   position: relative;
