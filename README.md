@@ -53,11 +53,11 @@ To run the application locally:
 
 ## Components :
 
-# - CityAutocomplete Component
+# - Autocomplete Component
 
 ## Description
 
-`CityAutocomplete` is a React component that provides an autocomplete input field for searching and selecting cities. It fetches cities based on a query and displays a list of suggestions. The user can either type in the input field or select from the dropdown list.
+`Autocomplete` is a React component that provides an autocomplete input field for searching and selecting cities. It fetches cities based on a query and displays a list of suggestions. The user can either type in the input field or select from the dropdown list.
 
 ## Props
 
@@ -66,17 +66,36 @@ To run the application locally:
 - Type: `(id: string) => void`
 - Description: A function that is called when a city is selected. It receives the `id` of the selected city as an argument.
 
-## Usage
+### `className` (optional)
 
-```tsx
-import CityAutocomplete from "./components/CityAutocomplete";
+- Type: `string`
+- Description: Additional class names for the input element.
 
-const handleCitySelect = (cityId: string) => {
-  console.log("Selected City ID:", cityId);
-};
+### `onChange` (optional)
 
-<CityAutocomplete onSelect={handleCitySelect} />;
-```
+- Type: `(e: React.ChangeEvent<HTMLInputElement>) => void`
+- Description: Callback triggered on input value change..
+
+### `onKeyDown` (optional)
+
+- Type: `(e: KeyboardEvent<HTMLInputElement>) => void`
+- Description: Callback triggered on key down events.
+
+### `placeholder` (optional)
+
+- Type: `string`
+- Default: `Search...`
+- Description: Placeholder text for the input field.
+
+### `getQueryFn` (required)
+
+- Type: `(text: string) => QueryFunction<Option[], QueryKey, never>`
+- Description: Function to fetch suggestions based on input query.
+
+### `placeholder` (optional)
+
+- Type: `(text: string) => QueryKey`
+- Description: Function to generate a unique query key for react-query.
 
 # - Loader Component
 
